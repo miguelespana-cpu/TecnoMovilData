@@ -40,4 +40,8 @@ java -cp out Main
 
 ## Autor
 
-Nombre del estudiante
+## Autor
+
+**Miguel Angel España Sarmiento**
+
+Proyecto académico desarrollado para la asignatura de Programación Orientada a Objetos.

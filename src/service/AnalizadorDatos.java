@@ -62,29 +62,34 @@ public class AnalizadorDatos {
                 ));
     }
 
-    // E. Tiempo promedio entre estaciones consecutivas
-    public static double calcularTiempoPromedio(List<Registro> registros) {
+    
+// E. Tiempo promedio entre estaciones consecutivas
+public static double calcularTiempoPromedio(List<Registro> registros) {
 
-        Map<String, List<Registro>> registrosPorUsuario = registros.stream()
-                .collect(Collectors.groupingBy(Registro::getIdUsuario));
+    // Agrupar únicamente las entradas de cada usuario
+    Map<String, List<Registro>> registrosPorUsuario = registros.stream()
+            .filter(r -> r.getAccion().equalsIgnoreCase("entrada"))
+            .collect(Collectors.groupingBy(Registro::getIdUsuario));
 
-        return registrosPorUsuario.values().stream()
-                .flatMapToDouble(lista -> {
+    // Calcular el tiempo entre las entradas consecutivas
+    return registrosPorUsuario.values().stream()
+            .flatMapToDouble(lista -> {
 
-                    List<Registro> ordenados = lista.stream()
-                            .sorted((a, b) -> a.getTimestamp()
-                                    .compareTo(b.getTimestamp()))
-                            .toList();
+                List<Registro> ordenados = lista.stream()
+                        .sorted((a, b) -> a.getTimestamp()
+                                .compareTo(b.getTimestamp()))
+                        .toList();
 
-                    return IntStream.range(1, ordenados.size())
-                            .mapToDouble(i -> Duration.between(
-                                    ordenados.get(i - 1).getTimestamp(),
-                                    ordenados.get(i).getTimestamp()
-                            ).toMinutes());
-                })
-                .average()
-                .orElse(0.0);
-    }
+                return IntStream.range(1, ordenados.size())
+                        .mapToDouble(i -> Duration.between(
+                                ordenados.get(i - 1).getTimestamp(),
+                                ordenados.get(i).getTimestamp()
+                        ).toMinutes());
+            })
+            .average()
+            .orElse(0.0);
+}
+
 
     // F. Deteccion de sobrecarga en rutas
     public static Map<String, Integer> detectarSobrecarga(
