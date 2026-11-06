@@ -40,8 +40,6 @@ java -cp out Main
 
 ## Autor
 
-## Autor
-
 **Miguel Angel España Sarmiento**
 
 Proyecto académico desarrollado para la asignatura de Programación Orientada a Objetos.
